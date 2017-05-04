@@ -1,0 +1,22 @@
+{
+  "name": "form name",
+  "description": "description",
+  "pages": [
+    {
+      "id": "16062797c1e9a92a9dbaae5e9ce17d6c",
+      "number": 1,
+      "name": null,
+      "description": null,
+      "pageFlow": {
+        "nextPage": true,
+        "label": "mwForm.pageFlow.goToNextPage"
+      },
+      "elements": [
+        
+      ],
+      "namedPage": false,
+      "isFirst": true,
+      "isLast": true
+    }
+  ]
+}
