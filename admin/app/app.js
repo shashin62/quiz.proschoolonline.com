@@ -6,7 +6,7 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
         });
         $translateProvider.preferredLanguage('en');
     })
-    .controller('BuilderController', function($q,$http, $translate, mwFormResponseUtils, $rootScope) {
+    .controller('BuilderController', function($q,$http, $translate, mwFormResponseUtils, $rootScope, $filter) {
 
         var ctrl = this;
         ctrl.mergeFormWithResponse = true;
@@ -59,6 +59,22 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
             if(ctrl.formBuilder.reset){
                 ctrl.formBuilder.reset();
             }
+        };
+        
+        ctrl.saveBuilder= function(){
+            console.log('saving data');
+            var jsonData = $filter('json')(ctrl.formData);
+            console.log(jsonData);
+            var postData ={
+                json:jsonData
+            };
+        
+            $http.post('save-data.php', postData).then(function(data) {
+                console.log('data saved',data);
+            },
+            function(data) {
+                console.log('error');
+            });
         };
 
         ctrl.changeLanguage = function (languageKey) {
