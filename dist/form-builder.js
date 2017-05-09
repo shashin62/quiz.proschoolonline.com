@@ -797,6 +797,7 @@ angular.module('mwFormBuilder').directive('mwFormPageElementBuilder', function (
                         ctrl.pageElement.question={
                             id: mwFormUuid.get(),
                             text: null,
+                            answer: null,
                             type:null,
                             required:true
                         };

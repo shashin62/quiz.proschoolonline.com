@@ -30,15 +30,41 @@
                 </div>
 
                 <mw-form-viewer form-data="ctrl.formData" template-data="ctrl.templateData"  form-status="ctrl.formStatus" options="ctrl.formOptions" api="ctrl.formViewer" response-data="ctrl.responseData" read-only="ctrl.viewerReadOnly" on-submit="ctrl.saveResponse()"></mw-form-viewer>
-
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" ng-model="ctrl.showResponseData"> Show response data
-                    </label>
+                
+                
+                
+                <div ng-if="ctrl.testResult" class="result">
+                    <div ng-repeat="result in ctrl.testResult">
+                        <h4>{{ result.name }}</h4>
+                        <span ng-if="result.points < 2">Your performance is not up to the mark</span>
+                        <span ng-if="result.points < 4 && result.points > 1 ">Your performance satisfactory</span>
+                        <span ng-if="result.points > 3">your performance is excellent</span>
+                        <br><br><br>
+                    </div>
+                
+                
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Section</th>
+                            <td ng-repeat="result in ctrl.testResult">{{result.name}}</td>
+                            <th>Overall</th>
+                        </tr>
+                        <tr>
+                            <th>Score</th>
+                            <td ng-repeat="result in ctrl.testResult">{{result.points}}</td>
+                            <td>{{ ctrl.finalScore }}</td>
+                        </tr>
+                    </table>
                 </div>
-                <pre ng-if="ctrl.showResponseData">
-{{ctrl.responseData|json}}
-                </pre>
+                
+
+                        
+<!--                <pre>
+                    {{ctrl.getMerged() | json}}
+                    {{ctrl.getQuestionWithResponseList() | json}}
+                </pre>-->
+
+                        
         </div>
 
 		

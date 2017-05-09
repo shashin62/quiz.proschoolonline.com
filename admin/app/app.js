@@ -71,6 +71,7 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
         
             $http.post('save-data.php', postData).then(function(data) {
                 console.log('data saved',data);
+                alert('Changes saved.');
             },
             function(data) {
                 console.log('error');
