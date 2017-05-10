@@ -291,7 +291,7 @@
           "image": {
             "id": "88511ebe400227b7834b3975c0e5a9b0",
             "align": "left",
-            "src": "http://localhost/Shashin/ProSchool/Survey/quiz.proschoolonline.com/assets/img/vr_q1.png"
+            "src": "http://quiz.proschoolonline.com/assets/img/vr_q1.png"
           }
         },
         {
@@ -360,7 +360,7 @@
           "image": {
             "id": "c5262b025087a78542eb10f4f0dc1803",
             "align": "left",
-            "src": "http://localhost/Shashin/ProSchool/Survey/quiz.proschoolonline.com/assets/img/vr_q2.png"
+            "src": "http://quiz.proschoolonline.com/assets/img/vr_q2.png"
           }
         },
         {
@@ -429,7 +429,7 @@
           "image": {
             "id": "3577350aeabf97df0bf640e7dba3c7ab",
             "align": "left",
-            "src": "http://localhost/Shashin/ProSchool/Survey/quiz.proschoolonline.com/assets/img/vr_q3.png"
+            "src": "http://quiz.proschoolonline.com/assets/img/vr_q3.png"
           }
         },
         {
@@ -498,7 +498,7 @@
           "image": {
             "id": "a74c287c811f15b063700829044224c5",
             "align": "left",
-            "src": "http://localhost/Shashin/ProSchool/Survey/quiz.proschoolonline.com/assets/img/vr_q4.png"
+            "src": "http://quiz.proschoolonline.com/assets/img/vr_q4.png"
           }
         },
         {
@@ -567,7 +567,7 @@
           "image": {
             "id": "1a212b50cf899b5220f27112621df0fc",
             "align": "left",
-            "src": "http://localhost/Shashin/ProSchool/Survey/quiz.proschoolonline.com/assets/img/vr_q5.png"
+            "src": "http://quiz.proschoolonline.com/assets/img/vr_q5.png"
           }
         },
         {
@@ -658,7 +658,7 @@
           "image": {
             "id": "d753ad64d6b2fa3494632c34b4153bb0",
             "align": "center",
-            "src": "http://localhost/Shashin/ProSchool/Survey/quiz.proschoolonline.com/assets/img/at_img.png",
+            "src": "http://quiz.proschoolonline.com/assets/img/at_img.png",
             "caption": "Foreign Exchange Reserves Of a Country. (in million US $)"
           }
         },
