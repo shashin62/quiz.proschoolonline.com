@@ -28,13 +28,11 @@
                     <mw-form-builder api="ctrl.formBuilder" options="ctrl.optionsBuilder" form-data="ctrl.formData" form-status="ctrl.formStatus" read-only="ctrl.builderReadOnly" on-image-selection="ctrl.onImageSelection()"></mw-form-builder>
                 </div>
             </div>
-            
-            <pre>
-                <!--{{ctrl.formData|json}}-->
-            </pre>
-                
+
+            <input id="fileInputImage" type="file" onChange="angular.element(this).scope().onImageUploadComplete(this.files)" style="display:none;"  />
         </div>
 
+       
 		
         <script src="../bower_components/angular/angular.js"></script>
         <script src="../bower_components/angular-sanitize/angular-sanitize.min.js"></script>

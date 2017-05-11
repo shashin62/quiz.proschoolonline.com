@@ -16,3 +16,7 @@ body{
     background-color: #e4e5e6;
     font-weight: bold;
 }
+
+img {
+	max-width: 100%;
+}
