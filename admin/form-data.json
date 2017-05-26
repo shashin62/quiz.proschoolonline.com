@@ -30,7 +30,7 @@
             "text": "Imaginary",
             "answer": "Dreamy",
             "type": "radio",
-            "required": true,
+            "required": false,
             "offeredAnswers": [
               {
                 "id": "fe569d799a4481c558a11303f3a7b31f",
@@ -80,7 +80,7 @@
             "text": "Impartial",
             "answer": "Detached",
             "type": "radio",
-            "required": true,
+            "required": false,
             "offeredAnswers": [
               {
                 "id": "99c430779070e537a1bedfec6942f287",
@@ -130,7 +130,7 @@
             "text": "Mutinous",
             "answer": "Turbulent",
             "type": "radio",
-            "required": true,
+            "required": false,
             "offeredAnswers": [
               {
                 "id": "51211b947530b20802489640e4562a30",
@@ -180,7 +180,7 @@
             "text": "Benediction",
             "answer": "Blessing",
             "type": "radio",
-            "required": true,
+            "required": false,
             "offeredAnswers": [
               {
                 "id": "0e98ea81e5b0bb22787a16d5fb311fd3",
@@ -230,7 +230,7 @@
             "text": "Culminate",
             "answer": "Peak",
             "type": "radio",
-            "required": true,
+            "required": false,
             "offeredAnswers": [
               {
                 "id": "4a0b7da1f301f1855a91b9f4516c570e",
@@ -303,7 +303,7 @@
             "text": "Which come next?",
             "answer": "D",
             "type": "radio",
-            "required": true,
+            "required": false,
             "offeredAnswers": [
               {
                 "id": "df62199961955f0295abfdb8d02b9ae3",
@@ -372,7 +372,7 @@
             "text": "Which is the odd one out?",
             "answer": "E",
             "type": "radio",
-            "required": true,
+            "required": false,
             "offeredAnswers": [
               {
                 "id": "fa7f78bb46bb53894d24aa6eb624e51c",
@@ -441,7 +441,7 @@
             "text": "Which comes next?",
             "answer": "E",
             "type": "radio",
-            "required": true,
+            "required": false,
             "offeredAnswers": [
               {
                 "id": "096291a6668b13cc9b8d421bd51acd43",
@@ -510,7 +510,7 @@
             "text": "Which is the odd one out?",
             "answer": "E",
             "type": "radio",
-            "required": true,
+            "required": false,
             "offeredAnswers": [
               {
                 "id": "339c4d47eec1439851ab52331853a598",
@@ -579,7 +579,7 @@
             "text": "Which is the odd one out?",
             "answer": "A",
             "type": "radio",
-            "required": true,
+            "required": false,
             "offeredAnswers": [
               {
                 "id": "496c53e7694ddc3692b4f38269879839",
@@ -671,7 +671,7 @@
             "text": "The ratio of the number of years, in which the foreign exchange reserves are above the average reserves, to those in which the reserves are below the average reserves is?",
             "answer": "3:5",
             "type": "radio",
-            "required": true,
+            "required": false,
             "offeredAnswers": [
               {
                 "id": "8161b4379390af1fcafefca1ad752d54",
@@ -721,7 +721,7 @@
             "text": "The foreign exchange reserves in 1997-98 was how many times that in 1994-95?",
             "answer": "1.5",
             "type": "radio",
-            "required": true,
+            "required": false,
             "offeredAnswers": [
               {
                 "id": "cc879c4f1499597ccb16ada7b9ebd553",
@@ -771,7 +771,7 @@
             "text": "For which year, the percent increase of foreign exchange reserves over the previous year, is the highest?",
             "answer": "1992-93",
             "type": "radio",
-            "required": true,
+            "required": false,
             "offeredAnswers": [
               {
                 "id": "569d08fce6f33d719126ae98fbaa1dcc",
@@ -821,7 +821,7 @@
             "text": "The foreign exchange reserves in 1996-97 were approximately what percent of the average foreign exchange reserves over the period under review?",
             "answer": "125%",
             "type": "radio",
-            "required": true,
+            "required": false,
             "offeredAnswers": [
               {
                 "id": "1bef01da3e3ee5423c8a55c0416824a1",
@@ -871,7 +871,7 @@
             "text": "What was the percentage increase in the foreign exchange reserves in 1997-98 over 1993-94?",
             "answer": "100",
             "type": "radio",
-            "required": true,
+            "required": false,
             "offeredAnswers": [
               {
                 "id": "f5a7d7159603923b72ea1363cb234450",
@@ -934,7 +934,7 @@
             "text": "What is the capital of New Zealand?",
             "answer": "Auckland",
             "type": "text",
-            "required": true,
+            "required": false,
             "pageFlowModifier": false
           }
         },
@@ -947,7 +947,7 @@
             "text": "Who was the first President of the United States?",
             "answer": "Washington DC",
             "type": "text",
-            "required": true,
+            "required": false,
             "pageFlowModifier": false
           }
         },
@@ -960,7 +960,7 @@
             "text": "Which metal is heavier, silver or gold?",
             "answer": "Gold",
             "type": "text",
-            "required": true,
+            "required": false,
             "pageFlowModifier": false
           }
         },
@@ -973,7 +973,7 @@
             "text": "How many legs do butterflies have?",
             "answer": "Six",
             "type": "text",
-            "required": true,
+            "required": false,
             "pageFlowModifier": false
           }
         },
@@ -986,7 +986,7 @@
             "text": "Which is the country with the most people?",
             "answer": "China",
             "type": "text",
-            "required": true,
+            "required": false,
             "pageFlowModifier": false
           }
         }

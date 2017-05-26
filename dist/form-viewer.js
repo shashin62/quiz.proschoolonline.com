@@ -287,6 +287,11 @@ angular.module('mwFormViewer').directive('mwFormViewer', ["$rootScope", function
 
             };
 
+            ctrl.goToPage= function(page){
+                ctrl.setCurrentPage(page);
+                ctrl.updateNextPageBasedOnAllAnswers();
+                $rootScope.$broadcast("mwForm.pageEvents.pageCurrentChanged",{currentPage:ctrl.currentPage});
+            }
 
             ctrl.goToPrevPage= function(){
                 var prevPage = ctrl.prevPages.pop();

@@ -73,13 +73,17 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
                             if(element.type === "question"){
                                 console.log('elements[' + index + '] = ' , element);
                                 var answer = element.question.answer.toLowerCase();
-                                if(element.question.type == "radio"){
-                                    if( element.question.response.selectedAnswer.value.toLowerCase() == answer){
-                                        points++;
-                                    }
-                                } else if(element.question.type == "text"){
-                                    if( element.question.response.toLowerCase() == answer){
-                                        points++;
+
+                                if(element.question.response != null && !angular.equals(element.question.response, {})){
+                                    if(element.question.type == "radio"){
+
+                                        if( element.question.response.selectedAnswer.value.toLowerCase() == answer){
+                                            points++;
+                                        }
+                                    } else if(element.question.type == "text"){
+                                        if( element.question.response.toLowerCase() == answer){
+                                            points++;
+                                        }
                                     }
                                 }
                             }
