@@ -3,8 +3,7 @@ body{
 }
 
 .demo-container{
-
-    padding: 80px 25px;
+/*    padding: 80px 25px;*/
 }
 
 .tab-pane{
@@ -20,3 +19,56 @@ body{
 img {
 	max-width: 100%;
 }
+
+body { background-color: #93ABC3;}
+
+.form-title{ color:#FFFFFF;font-weight: bold; }
+
+.demo-container { /*border: 5px solid green;*/}
+
+.mw-form-viewer{ /*border: 2px solid gray;*/ background-color: #93ABC3; }
+
+.mw-form-viewer-content { /*border: 1px solid blue;*/  }
+
+.jump-section { /*border: 2px solid yellow;*/ background-color: #FFFFFF;padding: 5px;}
+
+.mw-title-page, .mw-form-page { /*border:2px solid #000;*/ background-color: #FFFFFF;padding: 20px;}
+
+ .mw-form-page { margin-top: 0 !important;}
+
+.mw-page-title { background-color: #F2F2F2;padding: 10px;margin-top: 0 !important;}
+
+.mw-form-question{ background-color: #D9EDF7;border-radius: 3px;padding: 15px 20px 10px 20px;;}
+
+.col-sm-9{ padding-left: 15px !important;}
+
+.header-sep{ margin-top:0 !important; margin-bottom:10px !important;}
+
+.jump-section li{ list-style-type: none; }
+
+li a {
+    border: 1px solid #000;
+    list-style-type: none;
+    padding: 2px;
+    display: block;
+    margin: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.section-header{
+    padding: 0 10px;
+    color: #F88012;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.navbar{ height: 100px;background-color: #FFF;border-radius: 0;}
+
+.result{
+    padding: 20px;
+    background-color: #FFFFFF;
+    margin:0 15px;
+}
+
+.result-msg{font-size: 20px;padding-bottom: 15px;}

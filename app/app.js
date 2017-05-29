@@ -97,7 +97,7 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
                 }
 
                 var d = $q.defer();
-                var res = confirm("Response save success?");
+                var res = confirm("Are you sure to submit?");
                 if (res) {
                     d.resolve(true);
                     ctrl.formSubmitted = true;

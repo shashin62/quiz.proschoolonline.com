@@ -12,7 +12,15 @@
     </head>
     <body ng-controller="ViewerController as ctrl" ng-cloak>
 
-
+        <nav class="navbar">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                  <img alt="Brand" src="http://www.proschoolonline.com/img/proschoolonline-logo.jpg">
+                </a>
+              </div>
+            </div>
+          </nav>
         <div class="demo-container" ng-if="ctrl.formData">
 
                 <div class="form-inline">
@@ -33,16 +41,21 @@
                 
                 
                 
-                <div ng-if="ctrl.testResult" class="result">
+                <div ng-if="ctrl.testResult" class="result ">
+                    
+                    <div class="result-msg">System has evaluated your performance in the test & based on your performance prepared a detailed report for your reference</div>
+                    
                     <div ng-repeat="result in ctrl.testResult">
-                        <h4>{{ result.name }}</h4>
+                        <div><b>Section {{$index+1}}:</b> {{ result.name }}</div>
+                        <b>Feedback:</b>
                         <span ng-if="result.points < 2">Your performance is not up to the mark</span>
                         <span ng-if="result.points < 4 && result.points > 1 ">Your performance satisfactory</span>
                         <span ng-if="result.points > 3">your performance is excellent</span>
-                        <br><br><br>
+                        <br><br>
                     </div>
                 
                 
+                    <h4>Overall Performance Evaluation</h4><hr class="header-sep" style="border:1px solid #000;">
                     <table class="table table-bordered">
                         <tr>
                             <th>Section</th>
@@ -82,6 +95,10 @@
         <script src="dist/form-builder-bootstrap-tpls.min.js"></script>
         <script src="dist/form-viewer.js"></script>
         <script src="dist/form-viewer-bootstrap-tpls.min.js"></script>
+<!--        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/html2canvas/build/html2canvas.min.js"></script>
+        <script src="bower_components/jsPDF/dist/jspdf.debug.js"></script>
+        <script src="dist/saveHtmlToPdf.min.js"></script>-->
         <script src="app/app.js"></script>
 
 
