@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="dist/form-viewer.min.css">
         <link rel="stylesheet" href="assets/css/style.css">
     </head>
-    <body ng-controller="ViewerController as ctrl" ng-cloak>
+    <body ng-controller="MainController" ng-cloak>
 
         <nav class="navbar">
             <div class="container-fluid">
@@ -22,66 +22,11 @@
               </div>
             </div>
           </nav>
-        <div class="demo-container" ng-if="ctrl.formData">
-
-                <div class="form-inline">
-<!--                    <button type="button" style="margin-bottom: 15px" class="btn btn-default" ng-click="ctrl.resetViewer()">Reset</button>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" ng-model="ctrl.formOptions.autoStart"> Autostart
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" ng-model="ctrl.viewerReadOnly"> Read only
-                        </label>
-                    </div>-->
-                </div>
-
-                <mw-form-viewer form-data="ctrl.formData" template-data="ctrl.templateData"  form-status="ctrl.formStatus" options="ctrl.formOptions" api="ctrl.formViewer" response-data="ctrl.responseData" read-only="ctrl.viewerReadOnly" on-submit="ctrl.saveResponse()"></mw-form-viewer>
-                
-                
-                
-                <div ng-if="ctrl.testResult" class="result ">
-                    
-                    <div class="result-msg">System has evaluated your performance in the test & based on your performance prepared a detailed report for your reference</div>
-                    
-                    <div ng-repeat="result in ctrl.testResult">
-                        <div><b>Section {{$index+1}}:</b> {{ result.name }}</div>
-                        <b>Feedback:</b>
-                        <span ng-if="result.points < 2">Your performance is not up to the mark</span>
-                        <span ng-if="result.points < 4 && result.points > 1 ">Your performance satisfactory</span>
-                        <span ng-if="result.points > 3">your performance is excellent</span>
-                        <br><br>
-                    </div>
-                
-                
-                    <h4>Overall Performance Evaluation</h4><hr class="header-sep" style="border:1px solid #000;">
-                    <div style="width:100%;overflow-x: auto;">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>Section</th>
-                            <td ng-repeat="result in ctrl.testResult">{{result.name}}</td>
-                            <th>Overall</th>
-                        </tr>
-                        <tr>
-                            <th>Score</th>
-                            <td ng-repeat="result in ctrl.testResult">{{result.points}}</td>
-                            <td>{{ ctrl.finalScore }}</td>
-                        </tr>
-                    </table>
-                    </div>
-                </div>
-                
-
-                        
-               <!--pre>
-                    
-                    {{ctrl.getQuestionWithResponseList() | json}}
-                </pre-->
-
-                        
+        
+        <div class="container">
+            <div ui-view></div>
         </div>
+        
 
 		
         <script src="bower_components/angular/angular.js"></script>
@@ -93,6 +38,7 @@
         <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
         <script src="bower_components/Sortable/Sortable.min.js"></script>
         <script src="vendor/angular-legacy-sortable.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.min.js"></script>
         <script src="dist/form-utils.js"></script>
         <script src="dist/form-builder.js"></script>
         <script src="dist/form-builder-bootstrap-tpls.min.js"></script>

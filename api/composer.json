@@ -1,0 +1,14 @@
+{
+    "name": "ranjeet21r/quiz-api",
+    "description": "API to create and update quiz",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Ranjeet Rajpur",
+            "email": "dexter21r@gmail.com"
+        }
+    ],
+    "require": {
+        "catfan/Medoo": "^1.4"
+    }
+}

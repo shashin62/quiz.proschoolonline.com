@@ -1,0 +1,22 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+		<div ng-controller="BuilderController as ctrl" ng-cloak>
+			<div class="demo-container" ng-if="ctrl.formData">
+				
+					<div style="overflow:hidden">
+					<!--button type="button" style="margin-bottom: 15px" class="btn btn-default" ng-click="ctrl.resetBuilder()">Reset</button-->
+					<span class="">
+					<button type="button" style="margin-bottom: 15px" class="btn btn-success pull-right" ng-click="ctrl.saveBuilder()">Save</button>
+					<button type="button" style="margin-bottom: 15px" class="btn btn-default pull-left" ng-click="gotoList()">Back</button>
+					</span>
+					</div>
+
+					<div>
+					<mw-form-builder api="ctrl.formBuilder" options="ctrl.optionsBuilder" form-data="ctrl.formData" form-status="ctrl.formStatus" read-only="ctrl.builderReadOnly" on-image-selection="ctrl.onImageSelection()"></mw-form-builder>
+					<div>
+
+				<input id="fileInputImage" type="file" onChange="angular.element(this).scope().onImageUploadComplete(this.files)" style="display:none;"  />
+			</div>
+		</div>
+	</div>
+</div>

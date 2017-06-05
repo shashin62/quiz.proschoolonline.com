@@ -1,12 +1,59 @@
-angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormUtils', 'pascalprecht.translate', 'monospaced.elastic'])
-        .config(function ($translateProvider) {
+angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormUtils', 'pascalprecht.translate', 'monospaced.elastic'])
+        .config(function ($translateProvider, $stateProvider, $urlRouterProvider) {
+
+            $urlRouterProvider.otherwise('/home');
+
+            $stateProvider
+                    // HOME STATES AND NESTED VIEWS ========================================
+                    .state('home', {
+                        url: '/home',
+                        templateUrl: 'partial-list.html'
+                    })
+                    .state('view', {
+                        url: '/view/{quizId}',
+                        templateUrl: 'partial-view.html'
+                    });
+
             $translateProvider.useStaticFilesLoader({
                 prefix: 'dist/i18n/',
                 suffix: '/angular-surveys.json'
             });
             $translateProvider.preferredLanguage('en');
         })
-        .controller('ViewerController', function ($q, $http, $translate, mwFormResponseUtils, $rootScope) {
+        .controller('MainController', function ($scope, $rootScope, $state) {
+
+            $scope.gotoView = function () {
+                $state.go('view');
+            };
+
+            $scope.gotoList = function () {
+                $state.go('home');
+            };
+
+        })
+        .controller('ListController', function ($scope, $rootScope, $state, $http) {
+
+            var postData = {
+                action: 'list'
+            };
+
+            $scope.quiz = [];
+
+            $http.post('api/index.php', postData).then(function (data) {
+                data = data.data;
+                //console.log(data);
+                if (data.status === 1) {
+                    $scope.quiz = data.results;
+                } else {
+                    //handle error
+                }
+            },
+                    function (data) {
+                        console.log('error', data);
+                    });
+
+        })
+        .controller('ViewerController', function ($q, $http, $translate, mwFormResponseUtils, $rootScope, $stateParams, $state) {
 
             var ctrl = this;
             ctrl.mergeFormWithResponse = true;
@@ -19,10 +66,29 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
             ctrl.viewerReadOnly = false;
             ctrl.languages = ['en', 'pl', "es", "ru"];
             ctrl.formData = null;
-            $http.get('admin/form-data.json')
-                    .then(function (res) {
-                        ctrl.formData = res.data;
-                    });
+            if ($stateParams.quizId !== '' && $stateParams.quizId !== undefined) {
+                //console.log('ID',$stateParams.quizId);
+                $http.post('api/index.php', {id: $stateParams.quizId, action: 'fetch'}).then(function (data) {
+                    data = data.data;
+                    //console.log('data fetched', data);
+                    //alert(data.message);
+                    if (data.status === 1 && data.results.length > 0) {
+                        ctrl.formData = JSON.parse(data.results[0].form_json);
+                    } else {
+                        $state.go('home');
+                        //handle error
+                    }
+                },
+                function (data) {
+                    console.log('error', data);
+                });
+            } else {
+                $state.go('home');
+                $http.get('admin/form-data-02-06-2017.json')
+                        .then(function (res) {
+                            ctrl.formData = res.data;
+                        });
+            }
             ctrl.formBuilder = {};
             ctrl.formViewer = {};
             ctrl.formOptions = {
@@ -59,29 +125,29 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
                 var rData = ctrl.getMerged();
 
                 var sections = rData.pages;
-                
+
                 ctrl.testResult = [];
                 ctrl.finalScore = 0;
-                if(sections.length > 0){
-                
+                if (sections.length > 0) {
+
                     sections.forEach(function (section, index, array) {
-                        console.log('' + section.name + ' = ' , section.elements);
+                        //console.log('' + section.name + ' = ', section.elements);
                         ctrl.testResult[index] = {};
                         ctrl.testResult[index]['name'] = section.name;
                         var points = 0;
                         section.elements.forEach(function (element, index, array) {
-                            if(element.type === "question"){
-                                console.log('elements[' + index + '] = ' , element);
+                            if (element.type === "question") {
+                                //console.log('elements[' + index + '] = ', element);
                                 var answer = element.question.answer.toLowerCase();
 
-                                if(element.question.response != null && !angular.equals(element.question.response, {})){
-                                    if(element.question.type == "radio"){
+                                if (element.question.response != null && !angular.equals(element.question.response, {})) {
+                                    if (element.question.type == "radio") {
 
-                                        if( element.question.response.selectedAnswer.value.toLowerCase() == answer){
+                                        if (element.question.response.selectedAnswer.value.toLowerCase() == answer) {
                                             points++;
                                         }
-                                    } else if(element.question.type == "text"){
-                                        if( element.question.response.toLowerCase() == answer){
+                                    } else if (element.question.type == "text") {
+                                        if (element.question.response.toLowerCase() == answer) {
                                             points++;
                                         }
                                     }
@@ -92,8 +158,8 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
                         ctrl.testResult[index]['points'] = points;
                         ctrl.finalScore += points;
                     });
-                    
-                    ctrl.finalScore = ctrl.finalScore/sections.length;
+
+                    ctrl.finalScore = ctrl.finalScore / sections.length;
                 }
 
                 var d = $q.defer();

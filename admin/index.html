@@ -10,29 +10,22 @@
         <link rel="stylesheet" href="../dist/form-viewer.min.css">
         <link rel="stylesheet" href="../assets/css/style.css">
     </head>
-    <body ng-controller="BuilderController as ctrl" ng-cloak>
+    <body ng-controller="MainController" ng-cloak>
 
+		<!-- NAVIGATION -->
+		<nav class="navbar navbar-inverse" role="navigation">
+			<div class="navbar-header">
+				<a class="navbar-brand"><img alt="Brand" src="http://www.proschoolonline.com/img/proschoolonline-logo.jpg"></a>
+			</div>
+			<!--ul class="nav navbar-nav">
+				<li><a ui-sref="home">Home</a></li>
+				<li><a ui-sref="about">About</a></li>
+			</ul-->
+		</nav>
 
-        <div class="demo-container" ng-if="ctrl.formData">
-
-            <div class="row" >
-                <div class="col-md-offset-2 col-md-8">
-                    <div class="form-inline">
-                        <!--button type="button" style="margin-bottom: 15px" class="btn btn-default" ng-click="ctrl.resetBuilder()">Reset</button--> <button type="button" style="margin-bottom: 15px" class="btn btn-default" ng-click="ctrl.saveBuilder()">Save</button>
-<!--                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="ctrl.builderReadOnly"> Read only
-                            </label>
-                        </div>-->
-                    </div>
-                    <mw-form-builder api="ctrl.formBuilder" options="ctrl.optionsBuilder" form-data="ctrl.formData" form-status="ctrl.formStatus" read-only="ctrl.builderReadOnly" on-image-selection="ctrl.onImageSelection()"></mw-form-builder>
-                </div>
-            </div>
-
-            <input id="fileInputImage" type="file" onChange="angular.element(this).scope().onImageUploadComplete(this.files)" style="display:none;"  />
-        </div>
-
-       
+        <div class="container">
+			<div ui-view></div>
+		</div>
 		
         <script src="../bower_components/angular/angular.js"></script>
         <script src="../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
@@ -41,6 +34,7 @@
         <script src="../bower_components/angular-elastic/elastic.js"></script>
         <script src="../bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
         <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.min.js"></script>
         <script src="../bower_components/Sortable/Sortable.min.js"></script>
         <script src="../vendor/angular-legacy-sortable.js"></script>
         <script src="../dist/form-utils.js"></script>

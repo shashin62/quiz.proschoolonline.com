@@ -1,0 +1,22 @@
+<div class="panel panel-default" ng-controller="ListController">
+    <div class="panel-body">
+		<button type="button" class="btn btn-primary pull-right" ng-click="gotoAdd()">Add</button>
+		<table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Quiz</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="form in quiz">
+                    <td>{{ $index + 1 }}</td>
+                    <td><a ui-sref="edit({quizId: form.id})">{{form.title}}</a></td>
+                  </tr>
+                  <tr ng-hide="quiz.length">
+                    <td colspan="2">No Record Found</td>
+                  </tr>
+                </tbody>
+                </table>
+	</div>
+  </div>

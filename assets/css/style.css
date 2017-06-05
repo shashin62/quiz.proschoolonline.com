@@ -46,7 +46,7 @@ body { background-color: #93ABC3;}
 
 .jump-section li{ list-style-type: none; }
 
-li a {
+.jump-section li a {
     border: 1px solid #000;
     list-style-type: none;
     padding: 2px;

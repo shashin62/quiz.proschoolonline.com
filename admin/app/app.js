@@ -1,12 +1,64 @@
-angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormUtils', 'pascalprecht.translate', 'monospaced.elastic'])
-        .config(function ($translateProvider) {
+angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormUtils', 'pascalprecht.translate', 'monospaced.elastic'])
+        .config(function ($translateProvider, $stateProvider, $urlRouterProvider) {
+
+            $urlRouterProvider.otherwise('/home');
+
+            $stateProvider
+                    // HOME STATES AND NESTED VIEWS ========================================
+                    .state('home', {
+                        url: '/home',
+                        templateUrl: 'partial-list.html'
+                    })
+                    .state('add', {
+                        url: '/add',
+                        templateUrl: 'partial-add.html'
+                    })
+                    .state('edit', {
+                        url: '/edit/{quizId}',
+                        templateUrl: 'partial-edit.html'
+                    });
+
+
             $translateProvider.useStaticFilesLoader({
                 prefix: '../dist/i18n/',
                 suffix: '/angular-surveys.json'
             });
             $translateProvider.preferredLanguage('en');
         })
-        .controller('BuilderController', function ($q, $http, $translate, $scope, mwFormResponseUtils, $rootScope, $filter, $timeout) {
+        .controller('MainController', function ($scope, $rootScope, $state) {
+
+            $scope.gotoAdd = function () {
+                $state.go('add');
+            };
+
+            $scope.gotoList = function () {
+                $state.go('home');
+            };
+
+        })
+        .controller('ListController', function ($scope, $rootScope, $state, $http) {
+
+            var postData = {
+                action: 'list'
+            };
+
+            $scope.quiz = [];
+
+            $http.post('../api/index.php', postData).then(function (data) {
+                data = data.data;
+                //console.log(data);
+                if (data.status === 1) {
+                    $scope.quiz = data.results;
+                } else {
+                    //handle error
+                }
+            },
+            function (data) {
+                console.log('error', data);
+            });
+
+        })
+        .controller('BuilderController', function ($q, $http, $state, $translate, $scope, $filter, $stateParams) {
 
             var ctrl = this;
             ctrl.mergeFormWithResponse = true;
@@ -19,10 +71,30 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
             ctrl.viewerReadOnly = false;
             ctrl.languages = ['en', 'pl', "es", "ru"];
             ctrl.formData = null;
-            $http.get('form-data.json')
-                    .then(function (res) {
-                        ctrl.formData = res.data;
-                    });
+
+            if ($stateParams.quizId !== '' && $stateParams.quizId !== undefined) {
+                //console.log('ID',$stateParams.quizId);
+                $http.post('../api/index.php', {id:$stateParams.quizId,action:'fetch'}).then(function (data) {
+                    data = data.data;
+                    //console.log('data fetched', data);
+                    //alert(data.message);
+                    if (data.status === 1) {
+                        ctrl.formData = JSON.parse(data.results[0].form_json);
+                    } else {
+                        //handle error
+                    }
+                },
+                function (data) {
+                    console.log('error', data);
+                });
+            } else {
+                $http.get('form-data.json')
+                        .then(function (res) {
+                            ctrl.formData = res.data;
+                        });
+            }
+
+
             ctrl.formBuilder = {};
             ctrl.formViewer = {};
             ctrl.formOptions = {
@@ -41,7 +113,7 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
                  pageSize: 1 */
             };
             ctrl.formStatus = {};
-            
+
             ctrl.onImageSelection = function () {
                 ctrl.imagePromise = $q.defer();
                 document.getElementById('fileInputImage').click();
@@ -65,7 +137,7 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
                     var data = data.data;
                     //console.log('data saved', data);
                     //alert('image saved.');
-                    if(data.status == 1){
+                    if (data.status == 1) {
                         ctrl.imagePromise.resolve(data.src);
                     } else {
                         //console.log('error',data);
@@ -73,11 +145,11 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
                         alert(data.msg);
                     }
                 },
-                function (data) {
-                    //console.log('error',data);
-                    ctrl.imagePromise.reject();
-                    alert('Something went wrong');
-                });
+                        function (data) {
+                            //console.log('error',data);
+                            ctrl.imagePromise.reject();
+                            alert('Something went wrong');
+                        });
 
             };
 
@@ -88,20 +160,68 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
             };
 
             ctrl.saveBuilder = function () {
-                console.log('saving data');
+                //console.log('saving data');
+                var title = ctrl.formData.name;
+
+                if (title === '' || title === undefined) {
+                    title = 'form_' + (+new Date());
+                }
                 var jsonData = $filter('json')(ctrl.formData);
-                console.log(jsonData);
+                //console.log(jsonData);
                 var postData = {
-                    json: jsonData
+                    form_json: jsonData,
+                    title: title,
+                    action: 'add'
                 };
 
-                $http.post('save-data.php', postData).then(function (data) {
-                    console.log('data saved', data);
-                    alert('Changes saved.');
+                $http.post('../api/index.php', postData).then(function (data) {
+                    data = data.data;
+                    //console.log('data saved', data);
+                    alert(data.message);
+                    if (data.status === 1) {
+                        $state.go('home');
+                    } else {
+                        //handle error
+                    }
                 },
-                        function (data) {
-                            console.log('error');
-                        });
+                function (data) {
+                    console.log('error', data);
+                });
+            };
+            
+            ctrl.updateBuilder = function () {
+                if ($stateParams.quizId !== '' && $stateParams.quizId !== undefined) {
+                    //console.log('updating data');
+                    var title = ctrl.formData.name;
+
+                    if (title === '' || title === undefined) {
+                        title = 'form_' + (+new Date());
+                    }
+                    var jsonData = $filter('json')(ctrl.formData);
+                    //console.log(jsonData);
+                    var postData = {
+                        form_json: jsonData,
+                        title: title,
+                        action: 'edit',
+                        id: $stateParams.quizId
+                    };
+
+                    $http.post('../api/index.php', postData).then(function (data) {
+                        data = data.data;
+                        //console.log('data updated', data);
+                        alert(data.message);
+                        if (data.status === 1) {
+                            //$state.go('home');
+                        } else {
+                            //handle error
+                        }
+                    },
+                    function (data) {
+                        console.log('error', data);
+                    });
+                } else {
+                    console.log('Empty quiz id');
+                }
             };
 
             ctrl.changeLanguage = function (languageKey) {
