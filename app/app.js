@@ -66,22 +66,24 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
             ctrl.viewerReadOnly = false;
             ctrl.languages = ['en', 'pl', "es", "ru"];
             ctrl.formData = null;
+            ctrl.formId = 0;
             if ($stateParams.quizId !== '' && $stateParams.quizId !== undefined) {
                 //console.log('ID',$stateParams.quizId);
                 $http.post('api/index.php', {id: $stateParams.quizId, action: 'fetch'}).then(function (data) {
                     data = data.data;
-                    //console.log('data fetched', data);
+                    console.log('data fetched', data);
                     //alert(data.message);
                     if (data.status === 1 && data.results.length > 0) {
                         ctrl.formData = JSON.parse(data.results[0].form_json);
+                        ctrl.formId = data.results[0].id;
                     } else {
                         $state.go('home');
                         //handle error
                     }
                 },
-                function (data) {
-                    console.log('error', data);
-                });
+                        function (data) {
+                            console.log('error', data);
+                        });
             } else {
                 $state.go('home');
                 $http.get('admin/form-data-02-06-2017.json')
@@ -120,9 +122,42 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
 
             ctrl.showResponseRata = false;
             ctrl.formSubmitted = false;
+            
             ctrl.saveResponse = function () {
-
+                
                 var rData = ctrl.getMerged();
+
+                var d = $q.defer();
+                var res = confirm("Are you sure to submit?");
+                if (res) {
+
+                    $http.post('api/index.php', {action: 'response', data: rData, userid: 1, formid: ctrl.formId}).then(function (data) {
+                        data = data.data;
+                        //console.log('data saved', data);
+                        alert(data.message);
+                        if (data.status === 1) {
+                            d.resolve(true);
+                            ctrl.formSubmitted = true;
+                            ctrl.calculateResult(rData);
+                        } else {
+                            //handle error
+                            d.reject();
+                        }
+                    },
+                    function (data) {
+                        d.reject();
+                        console.log('error', data);
+                    });
+
+                    
+                } else {
+                    d.reject();
+                }
+                return d.promise;
+            };
+            
+            ctrl.calculateResult = function (rData) {
+                
 
                 var sections = rData.pages;
 
@@ -161,16 +196,6 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
 
                     ctrl.finalScore = ctrl.finalScore / sections.length;
                 }
-
-                var d = $q.defer();
-                var res = confirm("Are you sure to submit?");
-                if (res) {
-                    d.resolve(true);
-                    ctrl.formSubmitted = true;
-                } else {
-                    d.reject();
-                }
-                return d.promise;
             };
 
             ctrl.onImageSelection = function () {

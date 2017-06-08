@@ -191,20 +191,20 @@ angular.module('mwFormViewer').directive('mwFormViewer', ["$rootScope", function
             };
 
             ctrl.submitForm = function(){
-                ctrl.formSubmitted=true;
-                ctrl.submitStatus='IN_PROGRESS';
-
-                ctrl.setCurrentPage(null);
-
-
+                
                 var resultPromise = ctrl.onSubmit();
                 resultPromise.then(function(){
+                    console.log('On Resolve');
+                    ctrl.formSubmitted=true;
+                    ctrl.submitStatus='IN_PROGRESS';
+
+                    ctrl.setCurrentPage(null);
                     ctrl.submitStatus='SUCCESS';
+                },function(){
+                    console.log('On Reject');
                 }).catch(function(){
                     ctrl.submitStatus='ERROR';
                 });
-
-
             };
 
             ctrl.setCurrentPage = function (page) {
