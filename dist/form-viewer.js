@@ -405,7 +405,8 @@ angular.module('mwFormViewer').factory("FormQuestionId", function(){
             questionResponse: '=',
             readOnly: '=?',
             options: '=?',
-            onResponseChanged: '&?'
+            onResponseChanged: '&?',
+            questionNumber: '='
         },
         templateUrl: 'mw-form-question.html',
         controllerAs: 'ctrl',
