@@ -11,7 +11,21 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
                     })
                     .state('view', {
                         url: '/view/{quizId}',
-                        templateUrl: 'partial-view.html'
+                        templateUrl: 'partial-view.html',
+						resolve:{
+							loggedIn: function ( $q, $window, $cookies) {
+								var deferred = $q.defer();
+								var loginCookie = $cookies.get('LoginProschool');
+								console.log(loginCookie);
+								if(loginCookie == '' || loginCookie == undefined){
+									deferred.reject();
+									$window.location.href = 'http://www.proschoolonline.com/enroll';
+								} else {
+									deferred.resolve();
+								}
+								return deferred.promise;
+							}
+						}
                     });
 
             $translateProvider.useStaticFilesLoader({
@@ -19,6 +33,8 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
                 suffix: '/angular-surveys.json'
             });
             $translateProvider.preferredLanguage('en');
+			
+			
         })
         .controller('MainController', function ($scope, $rootScope, $state) {
 
@@ -28,7 +44,7 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
 
             $scope.gotoList = function () {
                 $state.go('home');
-            };
+            };			
 
         })
         .controller('ListController', function ($scope, $rootScope, $state, $http) {
@@ -53,17 +69,9 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
                     });
 
         })
-        .controller('ViewerController', function ( $window, $q, $http, $translate, mwFormResponseUtils, $rootScope, $stateParams, $state, $cookies, $cookieStore) {
+        .controller('ViewerController', function ( $window, $q, $http, $translate, mwFormResponseUtils, $rootScope, $stateParams, $state) {
 			
 			var ctrl = this;
-			ctrl.loginCookie = $cookieStore.get('LoginProschool');
-			ctrl.showTest = false;
-			console.log('Cookies',ctrl.loginCookie);
-			if(ctrl.loginCookie == '' || ctrl.loginCookie == undefined){
-				$window.location.href = 'http://www.proschoolonline.com/enroll';
-			} else {
-				ctrl.showTest = true;
-			}
             
             ctrl.mergeFormWithResponse = true;
             ctrl.cgetQuestionWithResponseList = true;
