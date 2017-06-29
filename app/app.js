@@ -1,4 +1,4 @@
-angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormUtils', 'pascalprecht.translate', 'monospaced.elastic'])
+angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormUtils', 'pascalprecht.translate', 'monospaced.elastic','ngCookies'])
         .config(function ($translateProvider, $stateProvider, $urlRouterProvider) {
 
             $urlRouterProvider.otherwise('/home');
@@ -53,9 +53,18 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
                     });
 
         })
-        .controller('ViewerController', function ($q, $http, $translate, mwFormResponseUtils, $rootScope, $stateParams, $state) {
-
-            var ctrl = this;
+        .controller('ViewerController', function ( $window, $q, $http, $translate, mwFormResponseUtils, $rootScope, $stateParams, $state, $cookies, $cookieStore) {
+			
+			var ctrl = this;
+			ctrl.loginCookie = $cookieStore.get('LoginProschool');
+			ctrl.showTest = false;
+			console.log('Cookies',ctrl.loginCookie);
+			if(ctrl.loginCookie == '' || ctrl.loginCookie == undefined){
+				$window.location.href = 'http://www.proschoolonline.com/enroll';
+			} else {
+				ctrl.showTest = true;
+			}
+            
             ctrl.mergeFormWithResponse = true;
             ctrl.cgetQuestionWithResponseList = true;
             ctrl.cgetResponseSheetHeaders = true;
