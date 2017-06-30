@@ -1,11 +1,24 @@
-<?php
+<?php session_start();
 require 'config.php';
 
 $params = json_decode(file_get_contents('php://input'), true);
 
 $action = $params['action'];
 
-if ($action == 'list') {
+if ($action == 'session') {
+
+    
+    $data['message'] = 'session data';
+
+    if(!empty($_SESSION['email']) && !empty($_SESSION['studentId'])){
+        $data['status'] = 1;
+        $data['results']['id'] = $_SESSION['studentId'];
+        $data['results']['email'] = $_SESSION['email'];
+    } else {
+        $data['status'] = 0;
+    }
+
+} else if ($action == 'list') {
 
     $results = $database->select('quiz_forms', [
         'title',

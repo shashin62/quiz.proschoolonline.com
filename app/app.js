@@ -13,16 +13,38 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
                         url: '/view/{quizId}',
                         templateUrl: 'partial-view.html',
 						resolve:{
-							loggedIn: function ( $q, $window, $cookies) {
+							loggedIn: function ( $q, $window, $cookies, $rootScope, $http) {
 								var deferred = $q.defer();
-								var loginCookie = $cookies.get('LoginProschool');
+								/*var loginCookie = $cookies.get('LoginProschool');
 								console.log(loginCookie);
 								if(loginCookie == '' || loginCookie == undefined){
 									deferred.reject();
 									$window.location.href = 'http://www.proschoolonline.com/enroll';
 								} else {
 									deferred.resolve();
-								}
+								}*/	
+
+								var postData = {
+									action: 'session'
+								};
+								
+								$http.post('api/index.php', postData).then(function (data) {
+									data = data.data;
+									//console.log(data);
+									if (data.status === 1) {
+										$rootScope.sessionInfo = data.results;
+										deferred.resolve();
+									} else {
+										//handle error
+										deferred.reject();
+										$window.location.href = 'http://www.proschoolonline.com/enroll';
+									}
+								},
+								function (data) {
+									console.log('error', data);
+									deferred.reject();
+								});
+								
 								return deferred.promise;
 							}
 						}
@@ -44,7 +66,9 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
 
             $scope.gotoList = function () {
                 $state.go('home');
-            };			
+            };	
+
+			console.log(data = sessionStorage.getItem('email'));
 
         })
         .controller('ListController', function ($scope, $rootScope, $state, $http) {
@@ -70,6 +94,8 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
 
         })
         .controller('ViewerController', function ( $window, $q, $http, $translate, mwFormResponseUtils, $rootScope, $stateParams, $state) {
+			
+			console.log($rootScope.sessionInfo);
 			
 			var ctrl = this;
             
