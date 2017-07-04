@@ -30,19 +30,19 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
 								
 								$http.post('api/index.php', postData).then(function (data) {
 									data = data.data;
-									//console.log(data);
+									console.log(data);
 									if (data.status === 1) {
 										$rootScope.sessionInfo = data.results;
 										deferred.resolve();
 									} else {
 										//handle error
-										deferred.reject();
+										//deferred.reject();
 										$window.location.href = 'http://www.proschoolonline.com/enroll';
 									}
 								},
 								function (data) {
 									console.log('error', data);
-									deferred.reject();
+									//deferred.reject();
 								});
 								
 								return deferred.promise;
@@ -67,8 +67,6 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
             $scope.gotoList = function () {
                 $state.go('home');
             };	
-
-			console.log(data = sessionStorage.getItem('email'));
 
         })
         .controller('ListController', function ($scope, $rootScope, $state, $http) {

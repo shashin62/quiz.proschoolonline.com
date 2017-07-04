@@ -1,4 +1,4 @@
-<?php session_start();
+<?php 
 require 'config.php';
 
 $params = json_decode(file_get_contents('php://input'), true);
@@ -10,10 +10,10 @@ if ($action == 'session') {
     
     $data['message'] = 'session data';
 
-    if(!empty($_SESSION['email']) && !empty($_SESSION['studentId'])){
+    if(!empty($_COOKIE['quize']) && !empty($_COOKIE['quizsid'])){
         $data['status'] = 1;
-        $data['results']['id'] = $_SESSION['studentId'];
-        $data['results']['email'] = $_SESSION['email'];
+        $data['results']['id'] = $_COOKIE['quizsid'];
+        $data['results']['email'] = $_COOKIE['quize'];
     } else {
         $data['status'] = 0;
     }
