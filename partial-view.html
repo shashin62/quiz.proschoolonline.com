@@ -45,7 +45,7 @@
                         <tr>
                             <th>Score</th>
                             <td ng-repeat="result in ctrl.testResult">{{result.points}}</td>
-                            <td>{{ ctrl.finalScore }}</td>
+                            <td>{{ ctrl.finalScore | number : 2 }}</td>
                         </tr>
                     </table>
                     </div>
