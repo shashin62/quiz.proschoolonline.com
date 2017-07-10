@@ -30,7 +30,7 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
 								
 								$http.post('api/index.php', postData).then(function (data) {
 									data = data.data;
-									console.log(data);
+									//console.log(data);
 									if (data.status === 1) {
 										$rootScope.sessionInfo = data.results;
 										deferred.resolve();
@@ -93,7 +93,7 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
         })
         .controller('ViewerController', function ( $window, $q, $http, $translate, mwFormResponseUtils, $rootScope, $stateParams, $state) {
 			
-			console.log($rootScope.sessionInfo);
+			//console.log($rootScope.sessionInfo);
 			
 			var ctrl = this;
             
@@ -112,7 +112,7 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
                 //console.log('ID',$stateParams.quizId);
                 $http.post('api/index.php', {id: $stateParams.quizId, action: 'fetch'}).then(function (data) {
                     data = data.data;
-                    console.log('data fetched', data);
+                    //console.log('data fetched', data);
                     //alert(data.message);
                     if (data.status === 1 && data.results.length > 0) {
                         ctrl.formData = JSON.parse(data.results[0].form_json);
