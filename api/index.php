@@ -10,10 +10,10 @@ if ($action == 'session') {
     
     $data['message'] = 'session data';
 
-    if(!empty($_COOKIE['quize']) && !empty($_COOKIE['quizsid'])){
+    if(!empty($_COOKIE['studentemail']) && !empty($_COOKIE['studentid'])){
         $data['status'] = 1;
-        $data['results']['id'] = $_COOKIE['quizsid'];
-        $data['results']['email'] = $_COOKIE['quize'];
+        $data['results']['id'] = $_COOKIE['studentid'];
+        $data['results']['email'] = $_COOKIE['studentemail'];
     } else {
         $data['status'] = 0;
     }
@@ -159,4 +159,3 @@ if ($action == 'session') {
 }
 
 echo json_encode($data);
-
