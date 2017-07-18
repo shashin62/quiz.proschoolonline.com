@@ -6,12 +6,14 @@
                   <tr>
                     <th>#</th>
                     <th>Quiz</th>
+					<th>Category</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr ng-repeat="form in quiz">
                     <td>{{ $index + 1 }}</td>
                     <td><a ui-sref="edit({quizId: form.id})">{{form.title}}</a></td>
+					<td>{{form.name}}</td>
                   </tr>
                   <tr ng-hide="quiz.length">
                     <td colspan="2">No Record Found</td>

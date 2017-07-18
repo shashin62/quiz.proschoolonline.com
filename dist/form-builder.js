@@ -1200,7 +1200,7 @@ angular.module('mwFormBuilder').directive('mwFormBuilder', ["$rootScope", functi
         templateUrl: 'mw-form-builder.html',
         controllerAs: 'ctrl',
         bindToController: true,
-        controller: ["mwFormUuid", "MW_QUESTION_TYPES", "mwFormBuilderOptions", function(mwFormUuid, MW_QUESTION_TYPES, mwFormBuilderOptions){
+        controller: ["mwFormUuid", "MW_QUESTION_TYPES", "mwFormBuilderOptions", "$http", function(mwFormUuid, MW_QUESTION_TYPES, mwFormBuilderOptions, $http){
             var ctrl = this;
             // Put initialization logic inside `$onInit()`
             // to make sure bindings have been initialized.
@@ -1227,6 +1227,22 @@ angular.module('mwFormBuilder').directive('mwFormBuilder', ["$rootScope", functi
 
                     }
                 }
+
+                ctrl.formData.categories = [];
+                $http.post('../api/index.php',{ action: 'categories' }).then(
+                function (data) {
+                    data = angular.fromJson(data);
+                    data = data.data;
+                    console.log(data);
+                    if(data.status == 1){
+                        ctrl.formData.categories = data.results;
+                    } else {
+                        console.log(data);
+                    }
+                },
+                function (data) {
+                    console.log('Error: ',data);
+                });
             };
             
 

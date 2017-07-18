@@ -1,0 +1,44 @@
+
+CREATE TABLE `quiz_categories` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0=Active,1=Inactive'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `quiz_categories`
+--
+
+INSERT INTO `quiz_categories` (`id`, `name`, `status`) VALUES
+(1, 'Category 1', 0),
+(2, 'Category 2', 0);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `quiz_categories`
+--
+ALTER TABLE `quiz_categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `quiz_categories`
+--
+ALTER TABLE `quiz_categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  
+  
+--
+-- Alter table quiz_forms added new columns
+--
+
+ALTER TABLE `quiz_forms` ADD `code` VARCHAR(255) NULL DEFAULT NULL AFTER `status`;
+
+ALTER TABLE `quiz_forms` ADD `category` int(11) NOT NULL DEFAULT 0 AFTER `status`;
+

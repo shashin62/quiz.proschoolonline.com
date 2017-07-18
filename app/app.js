@@ -1,4 +1,4 @@
-angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormUtils', 'pascalprecht.translate', 'monospaced.elastic','ngCookies'])
+angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormUtils', 'pascalprecht.translate', 'monospaced.elastic','ngCookies','angular.filter'])
         .config(function ($translateProvider, $stateProvider, $urlRouterProvider) {
 
             $urlRouterProvider.otherwise('/home');

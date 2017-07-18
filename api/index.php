@@ -18,13 +18,28 @@ if ($action == 'session') {
         $data['status'] = 0;
     }
 
-} else if ($action == 'list') {
+} else if ($action == 'categories') {
 
-    $results = $database->select('quiz_forms', [
-        'title',
+    $results = $database->select('quiz_categories', [
+        'name',
         'id'
             ], [
-        'status' => 1
+        'status' => 0
+    ]);
+
+    $data['status'] = 1;
+    $data['message'] = 'categories';
+    $data['results'] = $results;
+
+} else if ($action == 'list') {
+
+    $results = $database->select('quiz_forms', ["[>]quiz_categories" => ["category" => "id"]],
+        [
+        'quiz_forms.title',
+        'quiz_forms.id',
+        "quiz_categories.name"
+            ], [
+        'quiz_forms.status' => 1
     ]);
 
     $data['status'] = 1;
@@ -40,7 +55,7 @@ if ($action == 'session') {
 //    echo "<pre>";
 //    print_r($result);
 
-    $database->insert('quiz_forms', ['title' => $title, 'form_json' => $form_json]);
+    $database->insert('quiz_forms', ['title' => $title, 'form_json' => $form_json, 'code'=>$result['code'], 'category'=>$result['category'] ]);
 
     $formId = $database->id();
 
@@ -81,7 +96,10 @@ if ($action == 'session') {
 
     $result = json_decode($form_json, true);
 
-    $database->update('quiz_forms', ['title' => $title, 'form_json' => $form_json], ['id' => $formId]);
+    $code = isset($result['code'])? $result['code'] : '';
+    $category = isset($result['category'])? $result['category'] : 0;
+
+    $database->update('quiz_forms', ['title' => $title, 'form_json' => $form_json, 'code'=> $code, 'category'=>$category ], ['id' => $formId]);
 
     foreach ($result['pages'] as $key => $section) {
 
