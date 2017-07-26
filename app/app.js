@@ -5,6 +5,14 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
 
             $stateProvider
                     // HOME STATES AND NESTED VIEWS ========================================
+					.state('login', {
+                        url: '/login',
+                        templateUrl: 'partial-login.html'
+                    })
+					.state('signup', {
+                        url: '/signup',
+                        templateUrl: 'partial-signup.html'
+                    })
                     .state('home', {
                         url: '/home',
                         templateUrl: 'partial-list.html'

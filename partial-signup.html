@@ -1,0 +1,67 @@
+<div class="panel panel-default" ng-controller="ListController" style="width: 500px;margin: 0 auto;">
+    <div class="panel-body">
+        <div style="margin-bottom:20px;">
+			<h4>New User? Register to proceed</h4>
+		</div>       
+		<form action="" method="post" name="register" class="form" enctype="multipart/form-datal" id="register" novalidate="novalidate">
+			<div id="registerfrom">
+
+				<div class="form-group">
+
+							<label for="first_name" class="control-label">First Name <span style="color:red;">*</span></label>
+
+							<input type="text" name="first_name" class="form-control" id="first_name" value=""> 
+				</div>
+				<div class="form-group">
+							<label for="last_name" class="control-label">Last Name <span style="color:red;">*</span></label>
+							<input type="text" name="last_name" class="form-control" id="last_name" value="">
+				</div>
+				<div class="form-group">
+							<label for="email" class="control-label">Email Address <span style="color:red;">*</span></label>
+							<input type="text" name="email" class="form-control" id="email" value=""> 
+				</div>
+				<div class="form-group">
+						<label for="mobile" class="control-label">Mobile <span style="color:red;">*</span></label>
+						<input type="text" name="mobile" class="form-control" id="mobile" maxlength="10" value=""> 
+				</div>
+				<div class="form-group">
+							<label for="password" class="control-label">Password <span style="color:red;">*</span></label>
+							<input type="password" name="password" id="password" class="form-control" value=""> 
+				</div>
+				<div class="form-group">
+					<label for="cpassword" class="control-label">Confirm Password <span style="color:red;">*</span></label>
+					<input type="password" name="cpassword" class="form-control" value=""> 
+				</div>
+				<div class="form-group">
+
+							<label for="level" class="control-label">IMS Proschool Center Contacted </label>
+
+							<select name="center_assigned_to" class="form-control" id="center_assigned_to">
+								<option value="">--Select--</option>
+								<option value="4">Andheri-Mumbai Centre</option>
+								<option value="19">Bangalore JP Nagar</option>
+								<option value="9">Bangalore MG Road</option>
+								<option value="16">Chennai</option>
+								<option value="8">Delhi Lajpat Nagar</option>
+								<option value="20">Gurgaon Centre</option>
+								<option value="7">Head Office Sanpada</option>
+								<option value="10">Hyderabad Lakdi Pul</option>
+								<option value="18">Kochi</option>
+								<option value="5">Navi-Mumbai Centre</option>
+								<option value="11">Online Center</option>
+								<option value="6">Pune Shivaji Nagar</option>
+								<option value="17">Thane-Mumbai Centre</option>
+							</select>
+
+				</div>
+				<div class="form-group">
+					<button type="button" name="register_btn" id="register_btn" class="btn btn-primary" value="Register">Register</button> 
+				</div>
+			</div>
+			<input type="hidden" name="register_type" id="register_type">
+			<input type="hidden" name="referrer" id="referrer" value="regular">
+		</form>	
+		Already have account? <a ui-sref="login">Login</a>		
+
+	</div>
+  </div>
