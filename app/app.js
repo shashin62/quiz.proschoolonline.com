@@ -1,61 +1,57 @@
-angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormUtils', 'pascalprecht.translate', 'monospaced.elastic','ngCookies','angular.filter'])
+angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormUtils', 'pascalprecht.translate', 'monospaced.elastic', 'ngCookies', 'angular.filter', 'ngStorage'])
         .config(function ($translateProvider, $stateProvider, $urlRouterProvider) {
 
-            $urlRouterProvider.otherwise('/home');
+            $urlRouterProvider.otherwise('/login');
 
             $stateProvider
                     // HOME STATES AND NESTED VIEWS ========================================
-					.state('login', {
+                    .state('login', {
                         url: '/login',
-                        templateUrl: 'partial-login.html'
+                        templateUrl: 'partial-login.html',
+                        controller: 'LoginController'
                     })
-					.state('signup', {
+                    .state('signup', {
                         url: '/signup',
-                        templateUrl: 'partial-signup.html'
+                        templateUrl: 'partial-signup.html',
+                        controller: 'SignupController'
                     })
                     .state('home', {
                         url: '/home',
                         templateUrl: 'partial-list.html'
                     })
                     .state('view', {
-                        url: '/view/{quizId}',
+                        url: '/view/:quizId/:code',
+                        params: {
+                            quizId: {value: null},
+                            code: {value: null, squash: true}
+                        },
                         templateUrl: 'partial-view.html',
-						resolve:{
-							loggedIn: function ( $q, $window, $cookies, $rootScope, $http) {
-								var deferred = $q.defer();
-								/*var loginCookie = $cookies.get('LoginProschool');
-								console.log(loginCookie);
-								if(loginCookie == '' || loginCookie == undefined){
-									deferred.reject();
-									$window.location.href = 'http://www.proschoolonline.com/enroll';
-								} else {
-									deferred.resolve();
-								}*/	
+                        resolve: {
+                            loggedIn: function ($http, $stateParams, $state) {
 
-								var postData = {
-									action: 'session'
-								};
-								
-								$http.post('api/index.php', postData).then(function (data) {
-									data = data.data;
-									//console.log(data);
-									if (data.status === 1) {
-										$rootScope.sessionInfo = data.results;
-										deferred.resolve();
-									} else {
-										//handle error
-										//deferred.reject();
-										$window.location.href = 'http://www.proschoolonline.com/enroll';
-									}
-								},
-								function (data) {
-									console.log('error', data);
-									//deferred.reject();
-								});
-								
-								return deferred.promise;
-							}
-						}
+                                if ($stateParams.code !== null) {
+
+                                    var postData = {
+                                        action: 'view-code',
+                                        id: $stateParams.quizId,
+                                        code: $stateParams.code
+                                    };
+
+                                    $http.post('api/index.php', postData).then(
+                                            function (data) {
+                                                data = data.data;
+                                                //console.log(data);
+                                                if (data.status !== 1) {
+                                                    $state.go('login');
+                                                }
+                                            },
+                                            function (data) {
+                                                console.log('error', data);
+                                                //deferred.reject();
+                                            });
+                                }
+                            }
+                        }
                     });
 
             $translateProvider.useStaticFilesLoader({
@@ -63,10 +59,29 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
                 suffix: '/angular-surveys.json'
             });
             $translateProvider.preferredLanguage('en');
-			
-			
+
+
         })
-        .controller('MainController', function ($scope, $rootScope, $state) {
+        .run(function ($rootScope, $state, $localStorage) {
+            $rootScope.storage = $localStorage.$default({
+                token: null
+            });
+            $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
+                //console.log(fromState.name + ' ==> ' + toState.name, toParams);
+                if (toParams.code !== null && toState.name === 'view') {
+                    // show without login
+                } else if ($rootScope.storage.token === null && toState.name !== 'login' && toState.name !== 'signup') {
+                    // User isn’t authenticated
+                    $state.go("login");
+                    event.preventDefault();
+                } else if ($rootScope.storage.token !== null && (toState.name === 'login' || toState.name === 'signup')) {
+                    // User is authenticated
+                    $state.go("home");
+                    event.preventDefault();
+                }
+            });
+        })
+        .controller('MainController', function ($scope, $rootScope, $state, $localStorage) {
 
             $scope.gotoView = function () {
                 $state.go('view');
@@ -74,7 +89,58 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
 
             $scope.gotoList = function () {
                 $state.go('home');
-            };	
+            };
+
+            $scope.logout = function () {
+                $rootScope.storage.token = null;
+                $state.go('login');
+            };
+        })
+        .controller('LoginController', function ($scope, $rootScope, $state, $http, $localStorage) {
+
+            $scope.formData = {};
+
+            $scope.login = function () {
+
+                $scope.formData.action = 'login';
+                $http.post('api/index.php', $scope.formData).then(
+                        function (data) {
+                            data = data.data;
+                            console.log(data);
+                            if (data.status === 1) {
+                                $rootScope.storage.token = data.token;
+                                $state.go('home');
+                            } else {
+                                alert(data.message);
+                            }
+                        },
+                        function (data) {
+                            console.log('error', data);
+                        });
+            };
+
+        })
+        .controller('SignupController', function ($scope, $rootScope, $state, $http) {
+
+            $scope.userData = {};
+
+            $scope.signup = function () {
+
+                $scope.userData.action = 'signup';
+                $http.post('api/index.php', $scope.userData).then(
+                        function (data) {
+                            data = data.data;
+                            console.log(data);
+                            if (data.status === 1) {
+                                alert(data.message);
+                            } else {
+                                alert(data.message);
+                            }
+                        },
+                        function (data) {
+                            console.log('error', data);
+                        });
+            };
 
         })
         .controller('ListController', function ($scope, $rootScope, $state, $http) {
@@ -99,12 +165,12 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
                     });
 
         })
-        .controller('ViewerController', function ( $window, $q, $http, $translate, mwFormResponseUtils, $rootScope, $stateParams, $state) {
-			
-			//console.log($rootScope.sessionInfo);
-			
-			var ctrl = this;
-            
+        .controller('ViewerController', function ($window, $q, $http, $translate, mwFormResponseUtils, $rootScope, $stateParams, $state) {
+
+            //console.log($rootScope.sessionInfo);
+
+            var ctrl = this;
+
             ctrl.mergeFormWithResponse = true;
             ctrl.cgetQuestionWithResponseList = true;
             ctrl.cgetResponseSheetHeaders = true;
@@ -171,9 +237,9 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
 
             ctrl.showResponseRata = false;
             ctrl.formSubmitted = false;
-            
+
             ctrl.saveResponse = function () {
-                
+
                 var rData = ctrl.getMerged();
 
                 var d = $q.defer();
@@ -193,20 +259,20 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
                             d.reject();
                         }
                     },
-                    function (data) {
-                        d.reject();
-                        console.log('error', data);
-                    });
+                            function (data) {
+                                d.reject();
+                                console.log('error', data);
+                            });
 
-                    
+
                 } else {
                     d.reject();
                 }
                 return d.promise;
             };
-            
+
             ctrl.calculateResult = function (rData) {
-                
+
 
                 var sections = rData.pages;
 

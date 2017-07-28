@@ -9,6 +9,7 @@
         }
     ],
     "require": {
-        "catfan/Medoo": "^1.4"
+        "catfan/Medoo": "^1.4",
+        "zendframework/zend-crypt": "^3.2"
     }
 }

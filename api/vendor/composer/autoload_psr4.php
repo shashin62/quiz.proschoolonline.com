@@ -6,5 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Zend\\Stdlib\\' => array($vendorDir . '/zendframework/zend-stdlib/src'),
+    'Zend\\Math\\' => array($vendorDir . '/zendframework/zend-math/src'),
+    'Zend\\Crypt\\' => array($vendorDir . '/zendframework/zend-crypt/src'),
+    'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'Medoo\\' => array($vendorDir . '/catfan/medoo/src'),
+    'Interop\\Container\\' => array($vendorDir . '/container-interop/container-interop/src/Interop/Container'),
 );

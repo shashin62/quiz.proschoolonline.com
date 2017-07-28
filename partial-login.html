@@ -1,32 +1,33 @@
 <div class="panel panel-default" ng-controller="ListController" style="width: 500px;margin: 0 auto;">
     <div class="panel-body">
-                <div style="margin-bottom:20px;">
-        <h4>Existing User? Login to proceed</h4>
-    </div>
-		<form action="" method="post" name="loginForm" id="loginForm">    
-			<div id="registerfrom">
-				<div class="form-group">
-							<label for="email" class="control-label"><label for="email">Email Address</label></label>
-							<input type="text" name="email" class="form-control" value="">
-				</div>
-				<div class="form-group">
-							<label for="email" class="control-label"><label for="password">Password</label></label>
-							<input type="password" name="password" class="form-control" value="">
-				</div>
-				<div class="form-group">
-							 <input type="hidden" name="loginCsrf" value="6b297e958ba1201b71ff711b9619217e"><input name="login" type="submit" id="login" class="btn btn-primary" value="Submit"> 
-				</div>
-				<!--div class="form-group">
-					<div class="col-sm-12 col-md-12 col-lg-12">
-						<div class="col-sm-2 col-md-2 col-lg-2 text-right">&nbsp;</div>
-						<div class="col-sm-4 col-md-4 col-lg-4">
-							 <a href="/login/forgot-password">Forgot Password?</a>
-						</div>
-					</div>
-				</div-->
-			</div>
-		</form>		
-		Don't have account? <a ui-sref="signup">Signup</a>
+        <div style="margin-bottom:20px;">
+            <h4>Existing User? Login to proceed</h4>
+        </div>
+        <form action="" method="post" name="loginForm" id="loginForm">    
+            <div id="registerfrom">
+                <div class="form-group">
+                    <label for="email" class="control-label">Email Address</label>
+                    <input type="text" name="email" ng-model="formData.email" class="form-control" value="">
+                </div>
+                <div class="form-group">
+                    <label for="email" class="control-label"><label for="password">Password</label></label>
+                    <input type="password" name="password" ng-model="formData.password" class="form-control" value="">
+                </div>
+                <div class="form-group">
+                    <input type="hidden" name="loginCsrf" value="6b297e958ba1201b71ff711b9619217e">
+                    <input name="login" type="button" ng-click="login()" id="login" class="btn btn-primary" value="Login"> 
+                </div>
+                <!--div class="form-group">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                                <div class="col-sm-2 col-md-2 col-lg-2 text-right">&nbsp;</div>
+                                <div class="col-sm-4 col-md-4 col-lg-4">
+                                         <a href="/login/forgot-password">Forgot Password?</a>
+                                </div>
+                        </div>
+                </div-->
+            </div>
+        </form>		
+        Don't have account? <a ui-sref="signup">Signup</a>
 
-	</div>
-  </div>
+    </div>
+</div>

@@ -15,11 +15,13 @@
 
         <nav class="navbar">
             <div class="container-fluid">
-              <div class="navbar-header">
+              <div class="navbar-header" >
                 <a class="navbar-brand" href="#">
                   <img alt="Brand" src="http://www.proschoolonline.com/img/proschoolonline-logo.jpg">
                 </a>
+				
               </div>
+			  <a ng-click="logout()" style="float: right;padding: 30px 10px;cursor:pointer;" ng-show="$root.storage.token">Logout</a>
             </div>
           </nav>
         
@@ -41,6 +43,7 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-cookies.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/angular-filter/0.4.7/angular-filter.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
         <script src="dist/form-utils.js"></script>
         <script src="dist/form-builder.js"></script>
         <script src="dist/form-builder-bootstrap-tpls.min.js"></script>
