@@ -3,40 +3,40 @@
         <div style="margin-bottom:20px;">
             <h4>New User? Register to proceed</h4>
         </div>       
-        <form action="" method="post" name="register" class="form" enctype="multipart/form-data" id="register" novalidate="novalidate">
+        <form action="" method="post" name="registerForm" class="form" enctype="multipart/form-data" id="register" ng-submit="signup(registerForm)" novalidate angular-validator>
             <div id="registerfrom">
 
                 <div class="form-group">
 
                     <label for="first_name" class="control-label">First Name <span style="color:red;">*</span></label>
 
-                    <input type="text" name="first_name" class="form-control" ng-model="userData.first_name" id="first_name" value=""> 
+                    <input type="text" name="first_name" class="form-control" ng-model="userData.first_name" id="first_name" validate-on="dirty" required> 
                 </div>
                 <div class="form-group">
                     <label for="last_name" class="control-label">Last Name <span style="color:red;">*</span></label>
-                    <input type="text" name="last_name" class="form-control" ng-model="userData.last_name" id="last_name" value="">
+                    <input type="text" name="last_name" class="form-control" ng-model="userData.last_name" id="last_name" validate-on="dirty"  required>
                 </div>
                 <div class="form-group">
                     <label for="email" class="control-label">Email Address <span style="color:red;">*</span></label>
-                    <input type="text" name="email" class="form-control" ng-model="userData.email" id="email" value=""> 
+                    <input type="email" name="email" class="form-control" ng-model="userData.email" id="email" validate-on="dirty"  required> 
                 </div>
                 <div class="form-group">
                     <label for="mobile" class="control-label">Mobile <span style="color:red;">*</span></label>
-                    <input type="text" name="mobile" class="form-control" ng-model="userData.mobile" id="mobile" maxlength="10" value=""> 
+                    <input type="text" name="mobile" class="form-control" ng-model="userData.mobile" id="mobile" maxlength="15" validate-on="dirty" ng-pattern="mobilePattern" required> 
                 </div>
                 <div class="form-group">
                     <label for="password" class="control-label">Password <span style="color:red;">*</span></label>
-                    <input type="password" name="password" id="password" ng-model="userData.password" class="form-control" value=""> 
+                    <input type="password" name="password" id="password" ng-model="userData.password" class="form-control" validate-on="dirty" required> 
                 </div>
                 <div class="form-group">
                     <label for="cpassword" class="control-label">Confirm Password <span style="color:red;">*</span></label>
-                    <input type="password" name="cpassword" ng-model="userData.cpassword" class="form-control" value=""> 
+                    <input type="password" name="cpassword" ng-model="userData.cpassword" class="form-control" validate-on="dirty" validator = "userData.password === userData.cpassword" invalid-message = "'Passwords do not match!'" required> 
                 </div>
                 <div class="form-group">
 
                     <label for="level" class="control-label">IMS Proschool Center Contacted </label>
 
-                    <select name="center_assigned_to" class="form-control" ng-model="userData.center_assigned_to" id="center_assigned_to">
+                    <select name="center_assigned_to" class="form-control" ng-model="userData.center_assigned_to" id="center_assigned_to" validate-on="dirty" required>
                         <option value="">--Select--</option>
                         <option value="4">Andheri-Mumbai Centre</option>
                         <option value="19">Bangalore JP Nagar</option>
@@ -55,7 +55,7 @@
 
                 </div>
                 <div class="form-group">
-                    <button type="button" name="register_btn" id="register_btn" ng-click="signup()" class="btn btn-primary" value="Register">Register</button> 
+                    <input type="submit" name="register_btn" id="register_btn" class="btn btn-primary" value="Register">
                 </div>
             </div>
             <input type="hidden" name="register_type" id="register_type">

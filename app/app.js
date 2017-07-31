@@ -1,4 +1,4 @@
-angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormUtils', 'pascalprecht.translate', 'monospaced.elastic', 'ngCookies', 'angular.filter', 'ngStorage'])
+angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormUtils', 'pascalprecht.translate', 'monospaced.elastic', 'ngCookies', 'angular.filter', 'ngStorage', 'angularValidator'])
         .config(function ($translateProvider, $stateProvider, $urlRouterProvider) {
 
             $urlRouterProvider.otherwise('/login');
@@ -100,46 +100,57 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
 
             $scope.formData = {};
 
-            $scope.login = function () {
-
-                $scope.formData.action = 'login';
-                $http.post('api/index.php', $scope.formData).then(
-                        function (data) {
-                            data = data.data;
-                            console.log(data);
-                            if (data.status === 1) {
-                                $rootScope.storage.token = data.token;
-                                $state.go('home');
-                            } else {
-                                alert(data.message);
+            $scope.login = function (loginForm) {
+                console.log(loginForm.$valid);
+                if (loginForm.$valid) {
+                    $scope.formData.action = 'login';
+                    $http.post('api/index.php', $scope.formData).then(
+                            function (data) {
+                                data = data.data;
+                                console.log(data);
+                                if (data.status === 1) {
+                                    $rootScope.storage.token = data.token;
+                                    $state.go('home');
+                                } else {
+                                    alert(data.message);
+                                }
+                            },
+                            function (data) {
+                                console.log('error', data);
                             }
-                        },
-                        function (data) {
-                            console.log('error', data);
-                        });
+                    );
+                } else {
+                    console.log('Invalid form entries');
+                }
             };
 
         })
         .controller('SignupController', function ($scope, $rootScope, $state, $http) {
 
             $scope.userData = {};
+            
+            $scope.mobilePattern = /^\+?\d{8,15}$/;
+            
+            $scope.signup = function (registerForm) {
 
-            $scope.signup = function () {
-
-                $scope.userData.action = 'signup';
-                $http.post('api/index.php', $scope.userData).then(
-                        function (data) {
-                            data = data.data;
-                            console.log(data);
-                            if (data.status === 1) {
-                                alert(data.message);
-                            } else {
-                                alert(data.message);
-                            }
-                        },
-                        function (data) {
-                            console.log('error', data);
-                        });
+                if (registerForm.$valid) {
+                    $scope.userData.action = 'signup';
+                    $http.post('api/index.php', $scope.userData).then(
+                            function (data) {
+                                data = data.data;
+                                console.log(data);
+                                if (data.status === 1) {
+                                    alert(data.message);
+                                } else {
+                                    alert(data.message);
+                                }
+                            },
+                            function (data) {
+                                console.log('error', data);
+                            });
+                } else {
+                    console.log('invalid form entries');
+                }
             };
 
         })

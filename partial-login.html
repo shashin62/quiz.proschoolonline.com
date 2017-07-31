@@ -3,19 +3,19 @@
         <div style="margin-bottom:20px;">
             <h4>Existing User? Login to proceed</h4>
         </div>
-        <form action="" method="post" name="loginForm" id="loginForm">    
+        <form action="" method="post" name="loginForm" id="loginForm" ng-submit="login(loginForm)" novalidate angular-validator>    
             <div id="registerfrom">
                 <div class="form-group">
                     <label for="email" class="control-label">Email Address</label>
-                    <input type="text" name="email" ng-model="formData.email" class="form-control" value="">
+                    <input type="email" name="email" ng-model="formData.email" class="form-control" validate-on="dirty" invalid-message="'Invalid email address'" required-message="'Please enter email address'" required>
                 </div>
                 <div class="form-group">
                     <label for="email" class="control-label"><label for="password">Password</label></label>
-                    <input type="password" name="password" ng-model="formData.password" class="form-control" value="">
+                    <input type="password" name="password" ng-model="formData.password" class="form-control" validate-on="dirty" required-message="'Please enter password'" required>
                 </div>
                 <div class="form-group">
                     <input type="hidden" name="loginCsrf" value="6b297e958ba1201b71ff711b9619217e">
-                    <input name="login" type="button" ng-click="login()" id="login" class="btn btn-primary" value="Login"> 
+                    <input name="login" type="submit" id="login" class="btn btn-primary" value="Login"> 
                 </div>
                 <!--div class="form-group">
                         <div class="col-sm-12 col-md-12 col-lg-12">
@@ -28,6 +28,6 @@
             </div>
         </form>		
         Don't have account? <a ui-sref="signup">Signup</a>
-
+        {{ loginForm.$valid}}
     </div>
 </div>
