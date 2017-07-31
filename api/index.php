@@ -98,7 +98,7 @@ switch ($action) {
             }
         } else {
             $data['status'] = 0;
-            $data['message'] = 'Email already exists';
+            $data['message'] = 'Email already exist';
         }
         break;
 
