@@ -25,10 +25,10 @@ switch ($action) {
 
         $result = $database->select('student', [ 'password', 'id'], [ 'email' => $params['email']]);
 
-        if (count($result)>0) {
-            
+        if (count($result) > 0) {
+
             $result = $result[0];
-            
+
             $bcrypt = new Bcrypt();
             $securePass = $result['password'];
             $password = md5($params['password']);
@@ -58,41 +58,47 @@ switch ($action) {
 //        $title = $params['title'];
 //        $form_json = $params['form_json'];
 
-        $bcrypt = new Bcrypt();
-        //$params['password'] = $bcrypt->create($params['password']);
-        $params['password'] = md5($params['password']);
+        if (!$database->has('student', [ 'email' => $params['email']])) {
 
-        unset($params['action'], $params['cpassword']);
+            $bcrypt = new Bcrypt();
+            //$params['password'] = $bcrypt->create($params['password']);
+            $params['password'] = md5($params['password']);
 
-        $r = $database->insert('student', $params);
+            unset($params['action'], $params['cpassword']);
 
-        if ($r) {
+            $r = $database->insert('student', $params);
 
-            $curlPost = ["FirstName" => $params['first_name'],
-                "EmailAddress" => $params['email'],
-                "Phone" => $params['mobile'],
-                "mx_Centre_Name" => $params['center_assigned_to'],
-                "mx_Enquired_for" => 'Quiz form',
-                "MXHOrgCode" => "630",
-                "MXHLandingPageId" => "7baf70d5-744f-11e7-bd09-22000aa220ce",
-                "MXHFormBehaviour" => "0",
-                "MXHFormDataTransfer" => "0",
-                "MXHRedirectUrl", "http://www.proschoolonline.com/brochure",
-                "MXHAsc" => "50",
-                "MXHPageTitle" => "Quiz form",
-                "MXHOutputMessagePosition" => "0"];
+            if ($r) {
 
-            $curl = new Curl\Curl();
-            $curl->post('https://web.mxradon.com/t/FormTracker.aspx', $curlPost);
+                $curlPost = ["FirstName" => $params['first_name'],
+                    "EmailAddress" => $params['email'],
+                    "Phone" => $params['mobile'],
+                    "mx_Centre_Name" => $params['center_assigned_to'],
+                    "mx_Enquired_for" => 'Quiz form',
+                    "MXHOrgCode" => "630",
+                    "MXHLandingPageId" => "7baf70d5-744f-11e7-bd09-22000aa220ce",
+                    "MXHFormBehaviour" => "0",
+                    "MXHFormDataTransfer" => "0",
+                    "MXHRedirectUrl", "http://www.proschoolonline.com/brochure",
+                    "MXHAsc" => "50",
+                    "MXHPageTitle" => "Quiz form",
+                    "MXHOutputMessagePosition" => "0"];
 
-            $curl->close();
+                $curl = new Curl\Curl();
+                $curl->post('https://web.mxradon.com/t/FormTracker.aspx', $curlPost);
 
-            $data['status'] = 1;
-            $data['message'] = 'User registration successfully completed';
-            $data['results'] = $database->id();
+                $curl->close();
+
+                $data['status'] = 1;
+                $data['message'] = 'User registration successfully completed';
+                $data['results'] = $database->id();
+            } else {
+                $data['status'] = 0;
+                $data['message'] = 'Some error occured';
+            }
         } else {
             $data['status'] = 0;
-            $data['message'] = 'Some error occured';
+            $data['message'] = 'Email already exists';
         }
         break;
 
