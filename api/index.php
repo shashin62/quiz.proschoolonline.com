@@ -45,7 +45,10 @@ switch ($action) {
                 $data['status'] = 1;
                 $data['message'] = "The password is correct!";
                 $data['token'] = $token;
-            }
+            } else {
+				$data['status'] = 0;
+				$data['message'] = "Invalid credentials";
+			}
         } else {
             $data['status'] = 0;
             $data['message'] = "Invalid credentials";
@@ -65,7 +68,8 @@ switch ($action) {
             $params['password'] = md5($params['password']);
 
             unset($params['action'], $params['cpassword']);
-
+			$token = md5($params['email'] . uniqid());
+			$params['token'] = $token;
             $r = $database->insert('student', $params);
 
             if ($r) {
@@ -92,6 +96,7 @@ switch ($action) {
                 $data['status'] = 1;
                 $data['message'] = 'User registration successfully completed';
                 $data['results'] = $database->id();
+				$data['token'] = $params['token']; 
             } else {
                 $data['status'] = 0;
                 $data['message'] = 'Some error occured';

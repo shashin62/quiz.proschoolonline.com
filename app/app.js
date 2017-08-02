@@ -4,7 +4,6 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
             $urlRouterProvider.otherwise('/login');
 
             $stateProvider
-                    // HOME STATES AND NESTED VIEWS ========================================
                     .state('login', {
                         url: '/login',
                         templateUrl: 'partial-login.html',
@@ -141,6 +140,8 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
                                 console.log(data);
                                 if (data.status === 1) {
                                     alert(data.message);
+									$rootScope.storage.token = data.token;
+                                    $state.go('home');
                                 } else {
                                     alert(data.message);
                                 }
