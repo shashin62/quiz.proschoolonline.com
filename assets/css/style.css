@@ -72,3 +72,18 @@ body { background-color: #93ABC3;}
 }
 
 .result-msg{font-size: 20px;padding-bottom: 15px;}
+
+.r-tag{
+    padding: 5px 10px;
+    color: #fff;
+    border-radius: 5px;
+	cursor:pointer;
+}
+
+.bg-green {
+	background-color: #549a54;
+}
+
+.bg-red {
+	background-color: #d66260;
+}

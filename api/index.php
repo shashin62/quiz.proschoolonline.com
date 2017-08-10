@@ -21,6 +21,60 @@ switch ($action) {
         }
 
         break;
+    case 'form-status':
+
+    	$status = $database->update('quiz_forms', ['status' => $params['status']], ['id' => $params['id']]);
+        if ($status) {
+        	$results = $database->select('quiz_forms', ["[>]quiz_categories" => ["category" => "id"]], [
+            'quiz_forms.title',
+            'quiz_forms.id',
+            'quiz_forms.status',
+            "quiz_categories.name"
+                ]); 
+            $data['status'] = 1;
+            $data['message'] = "Status Updated";
+            $data['results'] = $results;
+        } else {
+            $data['status'] = 0;
+            $data['message'] = "Some error has occured, Please try again later.";
+        }
+
+        break;
+    case 'admin-login':
+
+        $result = $database->select('student', [ 'password', 'id'], [ 'email' => $params['email']]);
+        $adminUsers = [44,65,139];
+
+        if (count($result) > 0) {
+
+            $result = $result[0];
+
+            $bcrypt = new Bcrypt();
+            $securePass = $result['password'];
+            $password = md5($params['password']);
+
+            //if ($bcrypt->verify($password, $securePass)) {
+            if ($password == $securePass && in_array($result['id'], $adminUsers)) {
+                $token = md5($params['email'] . uniqid());
+                if ($database->has('quiz_student_token', [ 'student_id' => $result['id']])) {
+                    $database->update('quiz_student_token', ['token' => $token], ['student_id' => $result['id']]);
+                } else {
+                    $database->insert('quiz_student_token', ['student_id' => $result['id'], 'token' => $token]);
+                }
+
+                $data['status'] = 1;
+                $data['message'] = "The password is correct!";
+                $data['token'] = $token;
+            } else {
+				$data['status'] = 0;
+				$data['message'] = "Invalid credentials";
+			}
+        } else {
+            $data['status'] = 0;
+            $data['message'] = "Invalid credentials";
+        }
+
+        break;
     case 'login':
 
         $result = $database->select('student', [ 'password', 'id'], [ 'email' => $params['email']]);
@@ -133,13 +187,17 @@ switch ($action) {
         break;
     case 'list':
 
+    	$cond = [];
+    	if(!isset($params['admin'])){
+    		$cond['quiz_forms.status'] = 1;
+    	}
+
         $results = $database->select('quiz_forms', ["[>]quiz_categories" => ["category" => "id"]], [
             'quiz_forms.title',
             'quiz_forms.id',
+            'quiz_forms.status',
             "quiz_categories.name"
-                ], [
-            'quiz_forms.status' => 1
-        ]);
+                ], $cond); 
 
         $data['status'] = 1;
         $data['message'] = 'List';

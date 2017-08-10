@@ -13,15 +13,17 @@
     <body ng-controller="MainController" ng-cloak>
 
 		<!-- NAVIGATION -->
-		<nav class="navbar navbar-inverse" role="navigation">
-			<div class="navbar-header">
-				<a class="navbar-brand"><img alt="Brand" src="http://www.proschoolonline.com/img/proschoolonline-logo.jpg"></a>
-			</div>
-			<!--ul class="nav navbar-nav">
-				<li><a ui-sref="home">Home</a></li>
-				<li><a ui-sref="about">About</a></li>
-			</ul-->
-		</nav>
+		<nav class="navbar">
+            <div class="container-fluid">
+              <div class="navbar-header" >
+                <a class="navbar-brand" href="#">
+                  <img alt="Brand" src="http://www.proschoolonline.com/img/proschoolonline-logo.jpg">
+                </a>
+				
+              </div>
+			  <a ng-click="logout()" style="float: right;padding: 30px 10px;cursor:pointer;" ng-show="$root.storage.admintoken">Logout</a>
+            </div>
+          </nav>
 
         <div class="container">
 			<div ui-view></div>
@@ -35,6 +37,9 @@
         <script src="../bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
         <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular-filter/0.4.7/angular-filter.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+        <script src="../bower_components/tg-angular-validator/dist/angular-validator.min.js"></script>
         <script src="../bower_components/Sortable/Sortable.min.js"></script>
         <script src="../vendor/angular-legacy-sortable.js"></script>
         <script src="../dist/form-utils.js"></script>

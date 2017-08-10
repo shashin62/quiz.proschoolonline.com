@@ -1,10 +1,14 @@
-angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormUtils', 'pascalprecht.translate', 'monospaced.elastic'])
+angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormUtils', 'pascalprecht.translate', 'monospaced.elastic', 'angular.filter', 'ngStorage', 'angularValidator'])
         .config(function ($translateProvider, $stateProvider, $urlRouterProvider) {
 
             $urlRouterProvider.otherwise('/home');
 
             $stateProvider
-                    // HOME STATES AND NESTED VIEWS ========================================
+                    .state('login', {
+                        url: '/login',
+                        templateUrl: 'partial-login.html',
+                        controller: 'LoginController'
+                    })
                     .state('home', {
                         url: '/home',
                         templateUrl: 'partial-list.html'
@@ -25,6 +29,23 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
             });
             $translateProvider.preferredLanguage('en');
         })
+		.run(function ($rootScope, $state, $localStorage) {
+            $rootScope.storage = $localStorage.$default({
+                admintoken: null
+            });
+            $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
+                //console.log(fromState.name + ' ==> ' + toState.name, toParams);
+                if ($rootScope.storage.admintoken === null && toState.name !== 'login' ) {
+                    // User isn’t authenticated
+                    $state.go("login");
+                    event.preventDefault();
+                } else if ($rootScope.storage.admintoken !== null && toState.name === 'login' ) {
+                    // User is authenticated
+                    $state.go("home");
+                    event.preventDefault();
+                }
+            });
+        })
         .controller('MainController', function ($scope, $rootScope, $state) {
 
             $scope.gotoAdd = function () {
@@ -34,12 +55,47 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
             $scope.gotoList = function () {
                 $state.go('home');
             };
+			
+			$scope.logout = function () {
+                $rootScope.storage.admintoken = null;
+                $state.go('login');
+            };
+
+        })
+		.controller('LoginController', function ($scope, $rootScope, $state, $http, $localStorage) {
+
+            $scope.formData = {};
+
+            $scope.login = function (loginForm) {
+                console.log(loginForm.$valid);
+                if (loginForm.$valid) {
+                    $scope.formData.action = 'admin-login';
+                    $http.post('../api/index.php', $scope.formData).then(
+                            function (data) {
+                                data = data.data;
+                                console.log(data);
+                                if (data.status === 1) {
+                                    $rootScope.storage.admintoken = data.token;
+                                    $state.go('home');
+                                } else {
+                                    alert(data.message);
+                                }
+                            },
+                            function (data) {
+                                console.log('error', data);
+                            }
+                    );
+                } else {
+                    console.log('Invalid form entries');
+                }
+            };
 
         })
         .controller('ListController', function ($scope, $rootScope, $state, $http) {
 
             var postData = {
-                action: 'list'
+                action: 'list',
+				admin: true
             };
 
             $scope.quiz = [];
@@ -56,6 +112,42 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
             function (data) {
                 console.log('error', data);
             });
+			
+			
+			$scope.changeStatus = function( id, s){
+				var c;
+				if(s==1){
+					c = confirm('Inactive this quiz?');
+					s = 0;
+				} else{
+					c = confirm('Activate this quiz?');
+					s = 1;
+				}
+				
+				
+				if(c){
+					var postData = {
+						action: 'form-status',
+						id:id,
+						status:s
+					};
+					$http.post('../api/index.php', postData).then(function (data) {
+						data = data.data;
+						//console.log(data);
+						if (data.status === 1) {
+							alert(data.message);
+							$scope.quiz = data.results;
+						} else {
+							//handle error
+						}
+					},
+					function (data) {
+						console.log('error', data);
+					});
+				}
+				
+			}
+			
 
         })
         .controller('BuilderController', function ($q, $http, $state, $translate, $scope, $filter, $stateParams) {
@@ -162,6 +254,11 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
             ctrl.saveBuilder = function () {
                 //console.log('saving data');
                 var title = ctrl.formData.name;
+				
+				if(ctrl.formData.category == '' || ctrl.formData.category == undefined){
+					alert('Please select category');
+					return;
+				}
 
                 if (title === '' || title === undefined) {
                     title = 'form_' + (+new Date());
