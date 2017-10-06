@@ -129,6 +129,25 @@ angular.module('app', ['ui.router', 'ui.bootstrap', 'mwFormBuilder', 'mwFormView
             $scope.userData = {};
             
             $scope.mobilePattern = /^\+?\d{8,15}$/;
+			
+			var postData = {
+                action: 'list'
+            };
+
+            $scope.quiz = [];
+
+            $http.post('api/index.php', postData).then(function (data) {
+                data = data.data;
+                //console.log(data);
+                if (data.status === 1) {
+                    $scope.quiz = data.results;
+                } else {
+                    //handle error
+                }
+            },
+                    function (data) {
+                        console.log('error', data);
+                    });
             
             $scope.signup = function (registerForm) {
 
